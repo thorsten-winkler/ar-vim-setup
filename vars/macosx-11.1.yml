@@ -1,0 +1,22 @@
+---
+################################################################################
+### vars file for ar-vim-setup #################################################
+################################################################################
+
+################################################################################
+# VIM Setup will be created for the following users
+# root is already define in defaults/*
+################################################################################
+users: 
+  - user_dir: /Users/thwi/
+    user_group: staff
+    user_name: thwi
+
+################################################################################
+# List of packages to install for Ubuntu 20.04
+################################################################################
+packages:
+  - name: git
+    description: git client necessary for multiple tasks
+  - name: vim
+    description: "\"Vi IMproved\" editor"

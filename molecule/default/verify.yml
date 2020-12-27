@@ -3,7 +3,52 @@
 
 - name: Verify
   hosts: all
+  
+  vars:
+    users: 
+      - user_dir: /root
+        user_group: root
+        user_name: root
+      - user_dir: /home/thwi
+        user_group: root
+        user_name: root
+
+    packages:
+      - name: curl
+        description: cURL
+      - name: git
+        description: git client necessary for multiple tasks
+      - name: vim
+        description: "\"Vi IMproved\" editor"
+  
   tasks:
-  - name: Example assertion
+  
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+  - name: Print the package facts
+    debug:
+      var: ansible_facts.packages
+
+  - name: "Check for packages"
     assert:
-      that: true
+      that: "'{{ item.name }}' in ansible_facts.packages"
+      fail_msg: "'{{ item.name }}' is not installed"
+      success_msg: "'{{ item.name }}' is installed"
+    loop: "{{ packages }}"
+
+  - name: "Check if .vimrc is available for all defined users (1/2)"
+    stat:
+      path: "{{ item.user_dir }}/.vimrc"
+    register: reg_vimrc
+    loop: "{{ users }}"
+
+  - debug: var=reg_vimrc
+
+  - name: "Check if .vimrc is available for all defined users (2/2)" 
+    assert:
+      that: "{{ item.stat.exists }}"
+      fail_msg: "{{ item.invocation.module_args.path }} does not exist"
+      success_msg: "{{ item.invocation.module_args.path }} exists"
+    loop: "{{ reg_vimrc.results }}"

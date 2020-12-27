@@ -46,22 +46,24 @@
 - name: "Change to correct ownership of the previous step"
   file:
     path: "{{ item[0].user_dir }}/{{ item[1].dest }}"
-    group: "{{ item[0].user_name }}"
-    owner: "{{ item[0].user_group }}"
+    group: "{{ item[0].user_group }}"
+    owner: "{{ item[0].user_name }}"
     recurse: yes
     state: directory
   loop: "{{ users | product(repositories) | list }}"
 
 - name: "Copy individual filetype plugin to vim directory of all defined users"
-  file:
+  copy:
     src: files/ftplugin
-    dest: "{{ item.user_dir }}/{{ vim_base_config_dir }}/ftplugin"
-    state: link
+    dest: "{{ item.user_dir }}/{{ vim_base_config_dir }}"
+    group: "{{ item.user_group }}"
+    owner: "{{ item.user_name }}"
   loop: "{{ users }}"
 
 - name: "Copy .vimrc to users directory"
-  file:
+  copy:
     src: files/.vimrc
-    dest: "{{ item.user_dir }}/.vimrc"
-    state: link
+    dest: "{{ item.user_dir }}"
+    group: "{{ item.user_group }}"
+    owner: "{{ item.user_name }}"
   loop: "{{ users }}"
