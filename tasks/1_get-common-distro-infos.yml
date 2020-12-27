@@ -1,0 +1,20 @@
+---
+################################################################################
+### Tasks to get all distro relevant information
+################################################################################
+- name: "Set \"distro\" variable (fact)"
+  # https://docs.ansible.com/ansible/latest/modules/set_fact_module.html
+  set_fact:
+    distro: "{{ (ansible_distribution + '-' +  ansible_distribution_version )|lower }}"
+  when: 'distro is not defined'
+
+- name: "Current \"distro\" variable"
+  # https://docs.ansible.com/ansible/latest/modules/debug_module.html
+  debug:
+    msg:
+      - "Distribution: {{ ansible_distribution }}"
+      - "Version: {{ ansible_distribution_version }}"
+      - "distro: {{ distro }}"
+
+- name: "Include vars for {{ distro }}"
+  include_vars: "{{ distro }}.yml"

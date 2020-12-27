@@ -1,0 +1,54 @@
+---
+################################################################################
+### defaults file for ar-vim-setup #############################################
+################################################################################
+
+################################################################################
+# Default root user
+################################################################################
+default_user: root
+default_user_homedir: /root
+
+################################################################################
+# Working directory
+################################################################################
+working_dir: "{{ default_user_homedir }}"
+
+################################################################################
+# Git default vars
+################################################################################
+# Base directory for all git-repositories 
+git_dir: "{{ working_dir }}/git-repositories"
+
+################################################################################
+# VIM Setup will be created for the following users
+################################################################################
+users: 
+  - user_dir: /root
+    user_group: root
+    user_name: root
+
+# <home-of-user>/<vim_config_dir>
+# e.g. /root/.vim
+vim_base_config_dir: .vim
+
+vim_config_directories:
+  - vim_cfg_dir: "{{ vim_base_config_dir }}/autoload"
+  - vim_cfg_dir: "{{ vim_base_config_dir }}/backup"
+  - vim_cfg_dir: "{{ vim_base_config_dir }}/plugged"
+  - vim_cfg_dir: "{{ vim_base_config_dir }}/tmp"
+  - vim_cfg_dir: "{{ vim_base_config_dir }}/undo"
+
+
+################################################################################
+# Additional required GIT repositories
+################################################################################
+repositories:
+  - repo: https://github.com/morhetz/gruvbox
+    dest: "{{ vim_base_config_dir }}/plugged/gruvbox"
+    description: "Gruvbox is required because it is define in .vimrc. But
+      whereas the other plugins are not required at executing the
+      \"PlugInstall\" command, the \"gruvbox\" plugin blocks the command
+      execution if it isn't available. Therefore it will downloaded \"manually\"
+      directly from github.gruvbox"
+    version: master

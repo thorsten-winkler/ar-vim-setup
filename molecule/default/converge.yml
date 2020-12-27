@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ar-vim-setup"
+      include_role:
+        name: "ar-vim-setup"
