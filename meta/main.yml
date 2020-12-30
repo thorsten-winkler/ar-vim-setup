@@ -39,12 +39,18 @@ galaxy_info:
   #   - 7
   #   - 99.99
   platforms:
-    - name: Ubuntu
+    - name: Fedora
       versions:
-      - focal
+      - 33
     - name: MacOSX
       versions:
       - 11.1
+    - name: Ubuntu
+      versions:
+      # 20.04
+      - focal
+      # 20.10
+      - groovy
 
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is a keyword that describes
