@@ -1,0 +1,64 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+
+  vars:
+    users:
+      - user_dir: /root
+        user_group: root
+        user_name: root
+      - user_dir: /home/thwi
+        user_group: root
+        user_name: root
+
+    packages:
+      - name: git
+        description: git client necessary for multiple tasks
+      - name: vim-enhanced
+        description: "\"Vi IMproved\" editor"
+
+  tasks:
+
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+  - name: Print the package facts
+    debug:
+      #var: ansible_facts.packages['vim']
+      var: ansible_facts.packages
+      verbosity: 1
+
+  - name: "Check for packages"
+    assert:
+      that: "'{{ item.name }}' in ansible_facts.packages"
+      fail_msg: "{{ item.name }} is not installed"
+      success_msg: "{{ item.name }} is installed"
+      quiet: yes
+    loop: "{{ packages }}"
+    loop_control:
+      label: "{{ item.name }} package installed"
+
+  - name: "Check if .vimrc is available for all defined users (1/2)"
+    stat:
+      path: "{{ item.user_dir }}/.vimrc"
+    register: reg_vimrc
+    loop: "{{ users }}"
+    loop_control:
+      label: "{{ item.user_dir }} stored in register \"reg_vimrc\""
+
+  - debug:
+      var: reg_vimrc
+      verbosity: 1
+
+  - name: "Check if .vimrc is available for all defined users (2/2)"
+    assert:
+      that: "{{ item.stat.exists }}"
+      fail_msg: "{{ item.invocation.module_args.path }} does not exist"
+      success_msg: "{{ item.invocation.module_args.path }} exists"
+      quiet: yes
+    loop: "{{ reg_vimrc.results }}"
+    loop_control:
+      label: "{{ item.invocation.module_args.path }} exists"

@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
+platforms:
+  - name: test_ar-vim-setup_fedora33_docker
+    image: fedora:33
+    pre_build_image: false
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      stdout_callback: yaml
+      bin_ansible_callbacks: True
+verifier:
+  name: ansible
