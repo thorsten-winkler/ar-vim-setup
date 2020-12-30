@@ -17,13 +17,13 @@ working_dir: "{{ default_user_homedir }}"
 ################################################################################
 # Git default vars
 ################################################################################
-# Base directory for all git-repositories 
+# Base directory for all git-repositories
 git_dir: "{{ working_dir }}/git-repositories"
 
 ################################################################################
 # VIM Setup will be created for the following users
 ################################################################################
-users: 
+users:
   - user_dir: /root
     user_group: root
     user_name: root
