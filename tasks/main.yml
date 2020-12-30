@@ -17,6 +17,8 @@
     name: "{{ item.name }}"
     state: present
   loop: "{{ packages }}"
+  loop_control:
+    label: "{{ item.name }}"
 
 ################################################################################
 ### Install vim for all defined users
@@ -28,6 +30,8 @@
     owner: "{{ item[0].user_name }}"
     state: directory
   loop: "{{ users | product(vim_config_directories) | list }}"
+  loop_control:
+    label: "{{ item[0].user_dir  }}/{{ item[1].vim_cfg_dir }} created"
 
 - name: "Download/Install \"vim-plug\" as plugin manager"
   get_url:
@@ -36,6 +40,8 @@
     group: "{{ item.user_group }}"
     owner: "{{ item.user_name }}"
   loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.user_dir  }}/{{ vim_base_config_dir }}/autoload/plug.vim downloaded"
 
 - name: "Install additional items required by vim"
   git:
@@ -43,6 +49,8 @@
     dest: "{{ item[0].user_dir }}/{{ item[1].dest }}"
     version: "{{ item[1].version  }}"
   loop: "{{ users | product(repositories) | list }}"
+  loop_control:
+    label: "{{ item[1].repo  }} cloned to {{ item[0].user_dir }}/{{ item[1].dest }}"
 
 - name: "Change to correct ownership of the previous step"
   file:
@@ -52,6 +60,8 @@
     recurse: yes
     state: directory
   loop: "{{ users | product(repositories) | list }}"
+  loop_control:
+    label: "{{ item[0].user_dir }}/{{ item[1].dest }} changed to owner: {{ item[0].user_name }} and group: {{ item[0].user_group }}"
 
 - name: "Copy individual filetype plugin to vim directory of all defined users"
   copy:
@@ -60,6 +70,8 @@
     group: "{{ item.user_group }}"
     owner: "{{ item.user_name }}"
   loop: "{{ users }}"
+  loop_control:
+    label: "Copy files/ftplugin to {{ item.user_dir }}/{{ vim_base_config_dir }}"
 
 - name: "Copy .vimrc to users directory"
   copy:
@@ -68,3 +80,5 @@
     group: "{{ item.user_group }}"
     owner: "{{ item.user_name }}"
   loop: "{{ users }}"
+  loop_control:
+    label: "Copy files/.vimrc to {{ item.user_dir }}/.vimrc"
