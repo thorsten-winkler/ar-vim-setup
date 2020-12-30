@@ -18,6 +18,7 @@ call plug#begin()
 Plug 'https://github.com/jiangmiao/auto-pairs'
 Plug 'https://github.com/morhetz/gruvbox'
 Plug 'https://github.com/ntpeters/vim-better-whitespace'
+Plug 'https://github.com/preservim/nerdtree'
 Plug 'https://github.com/scrooloose/nerdtree'
 Plug 'https://github.com/sheerun/vim-polyglot'
 Plug 'https://github.com/tpope/vim-sensible' " Not sure if really needed
@@ -134,7 +135,8 @@ set smartcase
 " autocmd vimenter * NERDTree
 " <ctrl>+n to start NERDTree
 map <C-n> :NERDTreeToggle<CR>
-let g:NERDTreeIndicatorMapCustom = {
+
+let g:NERDTreeGitStatusIndicatorMapCustom = {
     \ "Modified"  : "✹",
     \ "Staged"    : "✚",
     \ "Untracked" : "✭",
@@ -143,7 +145,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Deleted"   : "✖",
     \ "Dirty"     : "✗",
     \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
+    \ "Ignored"   : "☒",
     \ "Unknown"   : "?"
     \ }
 
