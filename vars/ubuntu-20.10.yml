@@ -16,7 +16,7 @@ users:
     user_name: root
 
 ################################################################################
-# List of packages to install for Ubuntu 20.04
+# List of packages to install for Ubuntu 20.10
 ################################################################################
 packages:
   - name: git
