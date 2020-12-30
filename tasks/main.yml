@@ -41,6 +41,7 @@
   git:
     repo: "{{ item[1].repo }}"
     dest: "{{ item[0].user_dir }}/{{ item[1].dest }}"
+    version: "{{ item[1].version  }}"
   loop: "{{ users | product(repositories) | list }}"
 
 - name: "Change to correct ownership of the previous step"

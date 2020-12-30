@@ -3,9 +3,9 @@
 
 - name: Verify
   hosts: all
-  
+
   vars:
-    users: 
+    users:
       - user_dir: /root
         user_group: root
         user_name: root
@@ -20,9 +20,9 @@
         description: git client necessary for multiple tasks
       - name: vim
         description: "\"Vi IMproved\" editor"
-  
+
   tasks:
-  
+
   - name: Gather the package facts
     package_facts:
       manager: auto
@@ -46,7 +46,7 @@
 
   - debug: var=reg_vimrc
 
-  - name: "Check if .vimrc is available for all defined users (2/2)" 
+  - name: "Check if .vimrc is available for all defined users (2/2)"
     assert:
       that: "{{ item.stat.exists }}"
       fail_msg: "{{ item.invocation.module_args.path }} does not exist"
