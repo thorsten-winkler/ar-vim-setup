@@ -7,7 +7,7 @@
 # VIM Setup will be created for the following users
 # root is already define in defaults/*
 ################################################################################
-users: 
+users:
   - user_dir: /Users/thwi/
     user_group: staff
     user_name: thwi
