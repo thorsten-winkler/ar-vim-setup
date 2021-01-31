@@ -32,11 +32,11 @@ Every yml files belongs to a specific distro version and contains to packages (g
 But there is also the possibility to install additional packages by extending the following list:
 
 ```bash
- packages:
-  - name: git
-    description: git client necessary for multiple tasks
-  - name: vim
-    description: "\"Vi IMproved\" editor"
+  packages:
+    - name: git
+      description: git client necessary for multiple tasks
+    - name: vim
+      description: "Vi IMproved" editor
 
 ```
 
