@@ -7,13 +7,10 @@
 # VIM Setup will be created for the following users
 # root is already define in defaults/*
 ################################################################################
-users:
-  - user_dir: /root
-    user_group: root
-    user_name: root
-  - user_dir: /home/thwi
-    user_group: root
-    user_name: root
+#users:
+#  - user_dir: /root
+#    user_group: root
+#    user_name: root
 
 ################################################################################
 # List of packages to install
