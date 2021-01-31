@@ -1,7 +1,14 @@
 ---
 - name: Converge
   hosts: all
+
   tasks:
     - name: "Include ar-vim-setup"
       include_role:
         name: "ar-vim-setup"
+
+      vars:
+        users:
+          - user_dir: /root
+            user_group: root
+            user_name: root

@@ -9,9 +9,6 @@
       - user_dir: /root
         user_group: root
         user_name: root
-      - user_dir: /home/thwi
-        user_group: root
-        user_name: root
 
     packages:
       - name: git
