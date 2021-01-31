@@ -10,6 +10,28 @@
   import_tasks: "1_get-common-distro-infos.yml"
 
 ################################################################################
+### Ensure that all users with correct group exist
+################################################################################
+- name: "Search for defined users"
+  user:
+    name: "{{ item.user_name }}"
+    group: "{{ item.user_group }}"
+  check_mode: yes
+  register: reg_search
+  loop: "{{ users }}"
+  loop_control:
+    label: "{{ item.user_name }}:{{ item.user_group }}"
+
+- name: "Check existence of defined users"
+  fail:
+    msg: "User {{ item.invocation.module_args.name }} does not exist"
+  when: "item.changed is true"
+  loop: "{{ reg_search.results }}"
+  loop_control:
+    label: "Check for user {{ item.invocation.module_args.name }}! If skipping user already exists..."
+
+
+################################################################################
 ### Install all packages defined in defaults/* and/or var/*
 ################################################################################
 - name: "Install required packages"
@@ -43,7 +65,7 @@
   loop_control:
     label: "{{ item.user_dir  }}/{{ vim_base_config_dir }}/autoload/plug.vim downloaded"
 
-- name: "Install additional items required by vim"
+- name: "Download/Install additional repos/items required by vim"
   git:
     repo: "{{ item[1].repo }}"
     dest: "{{ item[0].user_dir }}/{{ item[1].dest }}"
@@ -51,6 +73,8 @@
   loop: "{{ users | product(repositories) | list }}"
   loop_control:
     label: "{{ item[1].repo  }} cloned to {{ item[0].user_dir }}/{{ item[1].dest }}"
+  become_user: "{{ item[0].user_name }}"
+  become: yes
 
 - name: "Change to correct ownership of the previous step"
   file:
@@ -82,3 +106,11 @@
   loop: "{{ users }}"
   loop_control:
     label: "Copy files/.vimrc to {{ item.user_dir }}/.vimrc"
+
+- name: "Execute PlugInstall to install prepared VIM Plugins"
+  command: creates="{{ item.user_dir }}/.vim/plugged/nerdtree" vim +'PlugInstall' +'qa'
+  loop: "{{ users }}"
+  loop_control:
+    label: "Execute PlugInstall for user {{ item.user_name }}"
+  become_user: "{{ item.user_name }}"
+  become: yes
